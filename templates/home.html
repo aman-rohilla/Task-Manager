@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Task Manager</title>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block body %}
+
+
+<div id="center-item" class="container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <ul class="list-group col" style="max-width: 700px; 
+      box-shadow: coral 0px 19px 38px, coral 0px 6px 8px; padding: 0;">
+
+
+        <li class="list-group-item" style="background-color: darkcyan; padding-top: 12px; padding-bottom: 12px;">
+
+          <div class="text-white" style="display: inline-block;">
+            <h4 class="my-0 pt-2">Task List</h4>
+          </div>
+          
+          <div class="btn-group float-right my-2" role="group" aria-label="Basic example">
+            <button class="btn btn-sm px-2 py-2 btn-primary" data-toggle="modal" data-target="#create-task-modal">Add New</button>
+            <button class="btn btn-sm px-2 py-2 btn-success" id="check-all">Check All</button>
+            <button class="btn btn-sm px-2 py-2 btn-dark" id="uncheck-all">Uncheck All</button>
+            <button class="btn btn-sm px-2 py-2 btn-danger" id="delete-all">Delete All</button>
+          </div>
+        </li>
+
+        {% for task in taskObject %}
+        {% if task.completed %}
+        <li class="list-group-item list-item border border-success list-group-item-success" 
+          style="background-color: rgb(160, 222, 160); padding-right: 10px; padding-left: 15px;">
+          {% else %}
+        <li class="list-group-item list-item list-group-item-{{ task.category }}"
+        style="padding-right: 10px; padding-left: 15px;"
+        >
+          {% endif %}
+
+          <div class="d-flex justify-content-between">
+
+            <div class=""
+              style="
+                word-wrap: break-word; 
+                text-align: justify; 
+                width: 70%;
+                ">
+              {{ task.name }}
+            </div>
+
+            <div style="width: 35%;" class="my-auto py-auto">
+              <div taskID="{{task.id}}" taskName="{{task.name}}" class="btn-group float-right task-item" role="group" aria-label="Basic example">
+                <button class="btn icon btn-edit" data-toggle="modal"
+                  data-target="#edit-modal" style="background-color: rgb(7, 155, 155); color: white; padding-left: 7px; padding-right: 7px;">
+                    <i class="fa-solid fa-pencil fa-xl"></i>
+                </button>
+                  {% if task.completed %}
+                  <button class="btn btn-success btn-complete" name="{{task.name}}" style="padding-left: 7px; padding-right: 7px;" >
+                      <i class="fa-regular fa-square-check fa-2xl"></i>
+                  </button>
+                  {% else %}
+                  <button class="btn btn-warning btn-complete" name="{{task.name}}" style="padding-left: 7px; padding-right: 7px;" >
+                      <i class="fa-regular fa-square fa-2xl"></i>
+                  </button>
+                  {% endif %}
+                  <button class="btn btn-danger btn-delete" name="{{task.name}}" style="padding-left: 8px; padding-right: 8px;">
+                      <i class="fa-solid fa-trash-can fa-xl"></i>
+                  </button>
+
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade px-2" id="edit-modal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+    <div class="modal-content" style="background-color: rgb(79, 131, 141); color: white;">
+      
+      <div class="modal-header">
+        <h6 class="modal-title" id="edit-task-title"></h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <form action="/edit-task/" method="post" id="form-id">
+          
+          <div class="form-group">
+            <!-- <label for="login-user">Username</label> -->
+            <input type="text" class="form-control form-input" name="name" placeholder="Enter new name"
+              style="background-color: rgb(167, 216, 225);" required>
+          </div>
+
+
+          <div class="row mt-4 mb-2 text-center">
+            <div>
+              <button type="submit" id="submit-btn" class="btn btn-success justify-content-center"
+                style="width: 200px; background-color: rgb(19, 163, 163);">Update</button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade px-2" id="create-task-modal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+    <div class="modal-content" style="
+      margin-left: auto; margin-right: auto; max-width: 500px; background-color: aquamarine;
+      box-shadow: darkcyan 0px 19px 38px, darkcyan 0px 6px 8px;
+      ">
+      <div class="modal-header">
+        <h6 class="modal-title">Add New Task</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/create-new-task" method="post">
+          <div class="form-group">
+            <!-- <label for="login-user">Username</label> -->
+            <input type="text" class="form-control form-input" name="name" placeholder=""
+              style="background-color: rgb(77, 209, 165);" required>
+          </div>
+
+          <div class="row mt-4 mb-3 text-center">
+            <div>
+              <button type="submit" class="btn btn-success justify-content-center"
+                style="width: 200px; background-color: darkcyan;">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  editBtns = document.querySelectorAll('.btn-edit');
+  editBtns.forEach(el => el.addEventListener('click', event => {
+    const taskItem = event.target.closest('.task-item');
+    taskID = taskItem.getAttribute("taskID");
+    taskName = taskItem.getAttribute("taskName");
+
+    let btn = document.getElementById('form-id')
+    btn.setAttribute('action', `/edit-task/${taskID}`)
+    document.getElementById('edit-task-title').innerHTML = taskName
+  }));
+
+  document.getElementById('check-all').addEventListener('click',
+    (event) => window.location = '/update-all/complete')
+  document.getElementById('uncheck-all').addEventListener('click',
+    (event) => window.location = '/update-all/incomplete')
+  document.getElementById('delete-all').addEventListener('click',
+    (event) => window.location = '/update-all/delete')
+
+
+  completeBtns = document.querySelectorAll('.btn-complete');
+  completeBtns.forEach(el => el.addEventListener('click', event => {
+    const taskItem = event.target.closest('.task-item');
+    taskID = taskItem.getAttribute("taskID");
+    window.location = `/complete-task/${taskItem.getAttribute('taskID')}`
+  }));
+
+  deleteBtns = document.querySelectorAll('.btn-delete');
+  deleteBtns.forEach(el => el.addEventListener('click', event => {
+    const taskItem = event.target.closest('.task-item');
+    taskID = taskItem.getAttribute("taskID");
+    window.location = `/delete-task/${taskItem.getAttribute('taskID')}`
+  }));
+
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5396b23a54.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.3.0/mdb.min.css" rel="stylesheet" />
+
+  {% block css %}
+  {% endblock %}
+
+  <style>
+    .rohilla:hover {
+      color: rgba(0, 255, 255, 0.775) !important;
+    }
+    .nav-link:hover {
+      color: lightseagreen !important;    
+    }
+
+  </style>
+
+  {% block title %}
+  {% endblock %}
+
+  <style>
+    .popover {
+      background-color: rgb(167, 208, 221);
+      border: 2px solid darkcyan;
+      width: 98vw;
+      max-width: 500px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      margin-top: 15px;
+    }
+    .bs-popover-auto[x-placement^=bottom] .arrow::after, .bs-popover-bottom .arrow::after {
+      top: 1px;
+      border-bottom-color: rgb(167, 208, 221);
+    }
+
+  </style>
+
+</head>
+
+<body onload="center()" onresize="center()" class="bg-dark">
+
+  <nav class="navbar navbar-expand-sm navbar-dark" id="navbar" style="background-color: rgb(21, 21, 21); border-bottom: 1px solid white;">
+    <a class="navbar-brand rohilla" href="https://rohilla.co.in" style="color: cyan;">Rohilla</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">
+        <i class="fa-solid fa-bars"></i>
+      </span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        
+        <li class="nav-item">
+          <a class="nav-link" href="/" style="color: lightcyan;">Task Manager</a>
+        </li>
+        <li class="nav-item" id="popover-btn">
+          <span class="nav-link" style="color: lightcyan; cursor: pointer;" data-mdb-placement="bottom" 
+          tabindex="0" data-mdb-toggle="popover" data-mdb-container="body" 
+          data-html="true" data-toggle="popover" id="popover">Docs</span>
+        </li>
+
+      </ul>
+
+      {% block singup_page_login_button %}  
+      {% endblock %}
+
+      {% if user %}
+        <ul class="navbar-nav ml-auto mr-3">
+          <li class="nav-item my-2">
+            <span style="color: lightblue;">Welcome, </span>
+            <span style="color: lightseagreen; font-weight: 600;">{{ user.name }}</span>
+          </li>
+        </ul>
+
+        <a href="/logout"><button type="button" class="btn btn-outline-info px-2 my-1">Logout</button></a>
+      {% endif %}
+    </div>
+  </nav>
+
+<div id="popover-content" style="display: none;">
+  
+  <h6 style="color: #212529;"><em><strong>API</strong></em></h6>
+  <ul class="pl-3" style="color: #212529; font-size: 14px; text-align: justify;">
+  <li>Create an account on rohilla.co.in for testing the Task Manager API </li>
+  <li>Send a GET request to /api/auth/token to get the Bearer type access token by sending your email and password as json in request body </li>
+  <li>A task has two parameters - name=string and completed=boolean </li>
+  </ul>
+  
+  
+<pre class="my-1"><strong style="font-size: 14px;">Base URL : rohilla.co.in/tm</strong></pre>
+<pre class="mb-0" style="font-size: 14px;">
+  POST   /api     - create a task
+  GET    /api/:id - get a task by id
+  PATCH  /api/:id - update a task by id
+  DELETE /api/:id - delete a task by id
+  GET    /api     - get all tasks
+  DELETE /api     - delete all tasks
+  PATCH  /api     - mark/unmark all tasks</pre>
+
+<div style="border-top: 2px solid rgb(45, 115, 138); margin: 15px -17px;"></div>
+
+<div class="container d-flex justify-content-between align-items-center">
+  <a href="https://github.com/aman-rohilla/Task-Manager" class="btn btn-primary btn-sm" target="_blank" style="background-color: rgb(13, 121, 116);">
+    <i class="fa-brands fa-github fa-xl mr-1"></i>
+    <span>Git Repo</span>  
+  </a>
+
+  <button type="button" class="btn btn-primary btn-sm" onclick="$('#popover').trigger('click');">Close</button>
+</div>
+
+</div>
+  
+
+  <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background-color: rgb(79, 131, 141); color: white;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalTitle">Login to your account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/login" method="post">
+            <div class="form-group">
+              <label for="login-user">Username</label>
+              <input type="text" class="form-control" id="login-user" name="login-user" placeholder="Enter username"
+                style="background-color: rgb(167, 216, 225);" required>
+            </div>
+            <div class="form-group">
+              <label for="login-pass">Password </label>
+              <input type="password" class="form-control" id="login-pass" name="login-pass"
+                placeholder="Enter password " style="background-color: rgb(167, 216, 225);" required>
+            </div>
+
+            <div class="row mt-4 text-center">
+              <div>
+                <button type="submit" class="btn btn-primary justify-content-center"
+                  style="width: 300px;">Login</button>
+              </div>
+            </div>
+          </form>
+          <hr />
+          <div class="row text-center">
+            <div>
+              <h6>Don't have an account</h6>
+              <a href="signup"><button type="button" class="btn btn-info justify-content-center mt-2"
+                  style="width: 200px;">Sign Up</button></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+  </div>
+
+  
+  {% if messages %}
+  <div id="messages" class="">
+    {% for obj in messages %}
+    <div class="container remove alert alert-{{ obj.category }} alert-dismissible fade show" role="alert" style="padding-top: 12px; padding-bottom: 12px; margin-top: 10px; margin-bottom: 10px;">
+      {{ obj.message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true" onclick="center()">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  
+
+  {% block body %}
+  {% endblock %}
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.3.0/mdb.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+
+  <script>
+    let class_added = false
+
+    function center() {
+      let navbarHeight = document.getElementById('navbar').offsetHeight
+      var div = document.getElementById('center-item');
+      if (div == null) return
+      var msg = document.getElementById('messages');
+      var mh = 0;
+      if(msg && msg.childElementCount>1) {
+        mh = msg.offsetHeight    
+      } 
+      var dh = div.offsetHeight;
+      var wh = window.innerHeight - navbarHeight - mh;
+      if(dh>wh) {
+        div.style.setProperty('margin-top', "20px");
+        return  
+      } 
+
+      div.style.setProperty('height', wh.toString()+"px");
+      if(class_added) return
+      div.classList.add('d-flex')
+      div.classList.add('justify-content-center')
+      div.classList.add('flex-column')
+      div.classList.add('align-items-center')
+      class_added = true
+    }
+
+    $('#popover').popover({
+      html: true,
+      trigger: 'click',
+      placement: 'bottom',
+      content: function () { return $('#popover-content').html(); }
+    });
+
+    $(".remove").on("remove", function () {
+        console.log("Element was removed");
+    })
+  </script>
+
+{% block javascript %}
+{% endblock %}
+
+</body>
+
+</html>

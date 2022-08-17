@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title%}
+<title>Task Manager</title>
+{% endblock %}
+
+{% block css %}
+<style>
+  #name, #email, #password {
+    background-color: rgb(167, 216, 225);
+  }
+</style>
+{% endblock %}
+
+{% block singup_page_login_button %}  
+  <a href="/" class="ml-auto"><button type="button" class="btn btn-outline-success px-2 my-1" >Login</button></a>
+{% endblock %}
+
+
+{% block body %}
+
+<div id="center-item">
+  <div class="container px-3"
+    style="color: black; max-width: 350px; border: 3px solid white;
+    border-radius: 5%;
+    /* background-color: rgb(227, 144, 42); */
+    background-color: rgb(102, 155, 166);
+    /* box-shadow: 0px 15px 25px lightsalmon; */
+    /* box-shadow: 0px 15px 25px rgb(43, 228, 228); */
+    box-shadow: 0px 15px 25px rgb(102, 155, 166);
+    ">
+    <form action="/signup" method="post"
+      class="py-4 px-2 align-items-center justify-content-center">
+
+      <h3 style="color: white;" class="text-center mb-4">Sign Up</h3>
+      <div class="form-floating my-3">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+        <label for="name">Name</label>
+      </div>
+      <div class="form-floating my-3">
+        <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
+        <label for="email">Email</label>
+      </div>
+      <div class="form-floating my-3">
+        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+        <label for="password">Password</label>
+      </div>
+      <div class="row justify-content-center mt-4">
+        <button type="submit" class="btn btn-success"
+        style="max-width: 150px; font-weight: 700;">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark' -->
+{% endblock %}
